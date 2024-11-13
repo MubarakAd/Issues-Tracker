@@ -5,6 +5,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 interface DeleteIssueProps {
   id: string;
@@ -16,8 +17,10 @@ const DeleteIssue: React.FC<DeleteIssueProps> = ({ id }) => {
   const handleDelete = async () => {
     try {
       await axios.delete(`/api/issues/${id}`);
+      toast.success('Issue Deleted successfully');
       router.push('/showIssuePage'); // Redirect after deletion
     } catch (error) {
+      toast.error('Some Thing is wrong');
       console.error('Error deleting issue:', error);
     }
   };

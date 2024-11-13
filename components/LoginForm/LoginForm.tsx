@@ -3,8 +3,11 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import Spinner from '../Spinner/Spinner';
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
+  const router = useRouter()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -19,9 +22,12 @@ const LoginForm = () => {
       password,
     });
     if (result && result.ok) {
-      window.location.href = '/IssuePage';    
+      // window.location.href = '/IssuePage';
+      toast.success('Use Logged in Succesfully');
+      router.push("/IssuePage")
     } else {
-      setError(result?.error ?? "Failed to sign in");
+      setError(result?.error ?? "Failed to sign in")
+      toast.error("Invalid Email or Passoword")
     }
     setClicked(false)
   };

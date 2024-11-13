@@ -1,8 +1,10 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import axios from 'axios';
 import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast';
+import Spinner from '../Spinner/Spinner';
 
 
 interface UserType {
@@ -17,12 +19,14 @@ interface UserType {
 const SignUp: React.FC = () => {
   const { register, handleSubmit, formState: { errors }, watch } = useForm<UserType>();
   const router =useRouter()
+  const [clicked,setClicked]=useState(false)
   
 
   // Watch the password field to compare it with confirmPassword
   const password = watch("password");
 
   const onSubmit: SubmitHandler<UserType> = async (data) => {
+    setClicked(true)
     try {
       console.log('muba is',data)
       const response = await axios.post('/api/Register', {
@@ -33,10 +37,13 @@ const SignUp: React.FC = () => {
         password: data.password,
       });
       console.log('User registered successfully:', response.data);
+      toast.success('User registered successfully');
       router.push("/LoginFormPage")
     } catch (error) {
+      toast.error('User already Exist');
       console.error('Error registering user:', error);
     }
+    setClicked(false)
   };
 
   return (
@@ -137,7 +144,7 @@ const SignUp: React.FC = () => {
               type="submit"
               className="w-full bg-indigo-600 text-white p-2 rounded-md hover:bg-indigo-700 transition duration-300"
             >
-              Submit
+             {clicked?<Spinner/>: "Submit"}
             </button>
           </div>
         </form>

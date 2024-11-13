@@ -9,12 +9,19 @@ interface au{
   password:string
   
 }
-declare module 'next-auth' {
+declare module "next-auth" {
   interface Session {
-    isAuthenticated: boolean
+    user: {
+      id: string;  // Add the `id` field
+      name?: string ;
+      email?: string  ;
+      image?: string ;
+    };
+    isAuthenticated: boolean;  // Include isAuthenticated in the session
   }
-  interface JWT {
-    isAuthenticated: boolean
+
+  interface User {
+    id: string;  // Add `id` to the User type
   }
 }
 const prisma = new PrismaClient();
@@ -80,13 +87,29 @@ export const authOptions:NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }) {
-      // Ensure isAuthenticated is always a boolean
-      token.isAuthenticated = !!user; // true if user exists, false otherwise
+      // If user exists, set `isAuthenticated` to true and add `id`
+     
+      
+      if (user) {
+        token.id = user.id;
+        token.isAuthenticated = true;
+      } else {
+        // Ensure `isAuthenticated` is false if no user is logged in
+        token.isAuthenticated = false;
+      }
       return token;
     },
     async session({ session, token }) {
-      // Transfer isAuthenticated from token to session as a boolean
-      session.isAuthenticated = Boolean(token.isAuthenticated);
+      // Attach `id` and `isAuthenticated` from token to session
+      if (session.user){
+        console.log("session user is ", session.user);
+        console.log("token is", token);
+        
+        session.user.id = token.sub as string;
+        session.isAuthenticated = Boolean(token.isAuthenticated);
+      }
+      console.log("final session", session);
+      
       return session;
     },
   },

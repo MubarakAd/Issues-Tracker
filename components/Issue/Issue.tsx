@@ -7,6 +7,7 @@ import { Callout } from '@radix-ui/themes';
 import { RxInfoCircled } from "react-icons/rx";
 import Spinner from '../Spinner/Spinner';
 import type { Issue } from '@prisma/client';
+import toast from 'react-hot-toast';
 
 
 interface Input {
@@ -32,14 +33,19 @@ const Issue= ({issue}:{issue?:Issue}) => {
       if (issue){
         const res = await axios.patch(`/api/issues/${issue.id}`, data);
         reset();
-        alert( "Issue Updated successfully!");
+        toast.success('Issue Updated Successfully');
         router.back()
         router.refresh()
       }
       else{
-        const res = await axios.post(endpoint, data);
+        const res = await axios.post(endpoint, {
+          ...data,
+          userId:2
+        });
         reset();
-        alert( "Issue submitted successfully!");
+        console.log(res);
+        
+        toast.success('Issue Submitted Successfully');
         router.push('/showIssuePage');
        
       }

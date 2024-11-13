@@ -13,8 +13,10 @@ const DropDown = () => {
     <Theme >
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>
-        <div className="cursor-pointer bg-slate-400 w-8 h-8 rounded-full overflow-hidden">
-  <Avatar src={userImage} fallback={fallbackInitial} />
+        <div className=" flex items-center justify-center cursor-pointer bg-slate-400 w-8 h-8 rounded-full ">
+  <Avatar src={userImage} fallback={fallbackInitial}  width={40}   // Adjust the width as needed
+  height={40}  // Adjust the height as needed
+  className="rounded-full" />
 </div>
 
         </DropdownMenu.Trigger>

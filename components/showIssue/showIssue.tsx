@@ -18,9 +18,16 @@ interface IssueData {
 interface ShowIssueProps {
   issues: IssueData[];
 }
+interface props{
+  params:{id:string}
+}
 
-export const getServerSideProps = async () => {
-  const issues = await prisma.issue.findMany();
+export const getServerSideProps = async ({params}:props) => {
+  const issues = await prisma.issue.findMany({
+    where:{
+      userId:1
+    }
+  });
   return { props: { issues } };
 };
 

@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/Navbar/Navbar";
 import {NextUIProvider} from "@nextui-org/react";
+import {Toaster} from "react-hot-toast"
 import Provider from "@/components/provider";
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,6 +23,7 @@ export default function RootLayout({
       <NextUIProvider>
         <Navbar/>
         <Theme>
+        <Toaster   position="top-right" />
         {children}
         </Theme>
         </NextUIProvider>

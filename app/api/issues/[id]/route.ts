@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { notFound } from "next/navigation";
+import { notFound} from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -13,7 +13,6 @@ const prisma = new PrismaClient();
 interface Props {
   params: { id: string };
 }
-
 export async function PATCH(req: NextRequest, { params }: Props) {
   const body = await req.json();
   const validation = schema.safeParse(body);
